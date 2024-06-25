@@ -8,21 +8,27 @@ token = os.getenv('TOKEN')
 repo_name = os.getenv('REPOSITORY')
 pr_number = os.getenv('PR_NUMBER')
 
-# Vérification si PR_NUMBER est fourni
-if not pr_number:
-    raise ValueError("PR_NUMBER n'est pas défini. Ce script doit être exécuté dans le contexte d'une pull request.")
-
 # Initialiser l'instance Github
 g = Github(token)
 # Obtenir le dépôt spécifié
 repo = g.get_repo(repo_name)
-# Obtenir la pull request spécifiée
-pull_request = repo.get_pull(int(pr_number))
 
 # Récupérer les diffs des commits
 diffs = []
-for file in pull_request.get_files():
-    diffs.append(file.patch)
+
+if pr_number:
+    # Obtenir la pull request spécifiée
+    pull_request = repo.get_pull(int(pr_number))
+    for file in pull_request.get_files():
+        diffs.append(file.patch)
+else:
+    # Obtenir les commits de la dernière push
+    commits = repo.get_commits()
+    for commit in commits:
+        files = commit.files
+        for file in files:
+            if file.patch:
+                diffs.append(file.patch)
 
 # Utiliser GPT pour analyser les diffs
 openai.api_key = os.getenv('OPENAI_API_KEY')

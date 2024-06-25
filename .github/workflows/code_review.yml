@@ -1,6 +1,9 @@
 name: Code Review
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -28,16 +31,17 @@ jobs:
       env:
         TOKEN: ${{ secrets.TOKEN }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        PR_NUMBER: ${{ github.event.pull_request.number }}
+        PR_NUMBER: ${{ github.event.pull_request.number || '' }}
         REPOSITORY: ${{ github.repository }}
       run: |
         source .venv/bin/activate
         python analyze_commits.py
 
     - name: Generate review comments
+      if: github.event_name == 'pull_request'
       env:
         TOKEN: ${{ secrets.TOKEN }}
-        PR_NUMBER: ${{ github.event.pull_request.number }}
+        PR_NUMBER: ${{ github.event.pull_request.number || '' }}
         REPOSITORY: ${{ github.repository }}
       run: |
         source .venv/bin/activate
