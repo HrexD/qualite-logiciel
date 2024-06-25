@@ -3,8 +3,8 @@ import json
 from github import Github
 
 # Récupérer les variables d'environnement
-token = os.getenv('TOKEN')
-repo_name = os.getenv('REPOSITORY')
+token = os.getenv('GITHUB_TOKEN')
+repo_name = os.getenv('GITHUB_REPOSITORY')
 pr_number = os.getenv('PR_NUMBER')
 
 # Initialiser l'instance Github
