@@ -1,9 +1,6 @@
 name: Code Review
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
@@ -29,7 +26,7 @@ jobs:
 
     - name: Analyze commits
       env:
-        TOKEN: ${{ secrets.TOKEN}}
+        TOKEN: ${{ secrets.TOKEN }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
         REPOSITORY: ${{ github.repository }}
