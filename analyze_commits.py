@@ -35,12 +35,15 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 analysis_results = []
 
 for diff in diffs:
-    response = openai.Completion.create(
-        engine="gpt-3.5-turbo",
-        prompt=f"Analyze this code diff and provide a code review:\n{diff}",
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a code review assistant."},
+            {"role": "user", "content": f"Analyze this code diff and provide a code review:\n{diff}"}
+        ],
         max_tokens=150
     )
-    analysis_results.append(response.choices[0].text.strip())
+    analysis_results.append(response.choices[0].message['content'].strip())
 
 # Enregistrer les résultats de l'analyse
 with open('analysis_results.json', 'w') as f:
