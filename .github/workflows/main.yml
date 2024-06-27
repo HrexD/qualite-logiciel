@@ -28,7 +28,7 @@ jobs:
       - name: execute py script - AI Code Reviewer
         env: 
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python checkPR.py
+        run: python analysis.py
 
       - name: add comment On pull request
         uses: actions/github-script@v6
