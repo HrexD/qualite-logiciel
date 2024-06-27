@@ -13,6 +13,7 @@ def division(x, y):
     return x / y
 
 def calculatrice():
+    print("La fonction calculatrice a été appelée.") 
     print("Sélectionnez l'opération.")
     print("1. Addition")
     print("2. Soustraction")
